@@ -21,7 +21,7 @@ use App\Http\Controllers\AuthController;
 |
 */
 Route::post('/login', [AuthController::class, 'authenticate']);
-
+Route::get('/listarClientes', [ClienteController::class, 'listarClientes']);
 // Route::group(['prefix' => 'admin', 'middleware' => ['jwt.verify', 'admin.verify']], function(){
 Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
     Route::post('/logout', [AuthController::class, 'logout']);
