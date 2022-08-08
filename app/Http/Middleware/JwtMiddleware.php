@@ -25,23 +25,23 @@ class JwtMiddleware
                 return \response()->json([
                     'status' => 403,
                     'message' => 'Invalid Token'
-                // ], 403);
-                ]);
+                ], 403);
+                //]);
             }
             else{
                 if($e instanceof \Tymon\JWTAuth\Exceptions\TokenExpiredException){
                     return \response()->json([
                         'status' => 403,
                         'message' => 'Token expired'
-                    // ], 403);
-                    ]);
+                    ], 403);
+                    //]);
                 }
                 else{
                     return \response()->json([
                         'status' => 403,
                         'message' => 'Token is required'
-                    // ], 403);
-                    ]);
+                    ], 403);
+                    //]);
                 }
             }
         }
