@@ -4,9 +4,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\CategoriaController;
+use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\CompraController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 
@@ -45,11 +47,22 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::put('/actualizarProducto', [ProductoController::class, 'actualizarProducto']);
         Route::post('/guardarProducto', [ProductoController::class, 'guardarProducto']);
         Route::get('/listarProductos', [ProductoController::class, 'listarProductos']);
+        Route::get('/buscarProducto', [ProductoController::class, 'buscarProducto']);
         
         Route::put('/actualizarEstadoCliente', [ClienteController::class, 'actualizarEstadoCliente']);
         Route::put('/actualizarCliente', [ClienteController::class, 'actualizarCliente']);
         Route::post('/guardarCliente', [ClienteController::class, 'guardarCliente']);
         Route::get('/listarClientes', [ClienteController::class, 'listarClientes']);
+
+        Route::put('/actualizarEstadoProveedor', [ProveedorController::class, 'actualizarEstadoProveedor']);
+        Route::put('/actualizarProveedor', [ProveedorController::class, 'actualizarProveedor']);
+        Route::post('/guardarProveedor', [ProveedorController::class, 'guardarProveedor']);
+        Route::get('/listarProveedores', [ProveedorController::class, 'listarProveedores']);
+
+        Route::put('/actualizarEstadoProveedor', [CompraController::class, 'actualizarEstadoProveedor']);
+        Route::put('/actualizarProveedor', [CompraController::class, 'actualizarProveedor']);
+        Route::get('/listarDetalleCompra', [CompraController::class, 'listarDetalleCompra']);
+        Route::get('/listarCompras', [CompraController::class, 'listarCompras']);
     });
 
     Route::group(['middleware' => ['cajero.verify']], function(){

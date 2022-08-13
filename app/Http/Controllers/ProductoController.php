@@ -13,6 +13,12 @@ class ProductoController extends Controller
         return $producto;
     }
 
+    public function buscarProducto(Request $request){
+        $producto = new Producto;
+        $producto = $producto->buscarProducto($request->Nombre);
+        return $producto;
+    }
+
     public function guardarProducto(Request $request){
         $datos['Venta']        = isset($request->Venta) ? $request->Venta : 0;
         $datos['Stock']        = isset($request->Stock) ? $request->Stock : 0;

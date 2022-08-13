@@ -181,8 +181,6 @@ return [
         Illuminate\Translation\TranslationServiceProvider::class,
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
-        //'Tymon\JWTAuth\Providers\JWTAuthServiceProvider',
-        'Tymon\JWTAuth\Providers\LaravelServiceProvider',
         /*
          * Package Service Providers...
          */
@@ -210,8 +208,6 @@ return [
     */
 
     'aliases' => Facade::defaultAliases()->merge([
-        'JWTAuth' => 'Tymon\JWTAuth\Facades\JWTAuth',
-        'JWTFactory' => 'Tymon\JWTAuth\Facades\JWTFactory',
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

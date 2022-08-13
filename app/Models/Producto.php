@@ -25,7 +25,24 @@ class Producto extends Model
         try {
             DB::beginTransaction();
             $producto = Producto::select('producto.*', 'categoria.Nombre_Categoria as Categoria')
-                ->join('categoria', 'producto.ID_Categoria', '=', 'categoria.ID_Categoria')
+                ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
+                ->get();
+            DB::commit();
+
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+
+    public function buscarProducto($Nombre){
+        try {
+            DB::beginTransaction();
+            $producto = Producto::select('producto.*', 'categoria.Nombre_Categoria as Categoria')
+                ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
+                ->where('producto.Nombre_Producto', '=', $Nombre)
                 ->get();
             DB::commit();
 
@@ -72,6 +89,35 @@ class Producto extends Model
             $producto->Ingreso_Producto     = trim($datos['Ingreso']);
             $producto->ID_Categoria         = trim($datos['Categoria']);
             $producto->Descripcion_Producto = trim($datos['Descripcion']);
+            $producto->save();
+            DB::commit();
+            
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function actualizarCompraVentaProducto($datos){
+        $salida   = 0;
+        $ingreso  = 0;
+        $cantidad = 0;
+
+        if ($datos['Tipo'] == 'Ingreso'){
+            $ingreso  = $datos['Cantidad'];
+            $cantidad = $datos['Cantidad'];
+        }else{
+            $salida   = $datos['Cantidad'];
+            $cantidad = - $datos['Cantidad'];
+        }
+
+        try {
+            DB::beginTransaction();
+            $producto = Producto::findOrFail(trim($datos['ID']));
+            $producto->Stock            = $producto->Stock + ($cantidad);
+            $producto->Salida_Producto  = $producto->Salida_Producto - $salida;
+            $producto->Ingreso_Producto = $producto->Ingreso_Producto + $ingreso;
             $producto->save();
             DB::commit();
             

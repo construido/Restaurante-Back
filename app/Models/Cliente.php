@@ -15,7 +15,6 @@ class Cliente extends Model
     protected $table      = 'cliente';
     protected $primaryKey = 'ID_Cliente';
     protected $fillable   = ['Nombre_Razon_Social_Cliente', 'CI_NIT_Cliente', 'Telefono_Cliente', 'Correo_Cliente', 'Estado_Cliente'];
-
     public $timestamps = false;
 
     public function listarClientes(){
