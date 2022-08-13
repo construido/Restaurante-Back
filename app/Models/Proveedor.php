@@ -30,6 +30,22 @@ class Proveedor extends Model
         }
     }
 
+    public function buscarProveedor($Nombre){
+        try {
+            DB::beginTransaction();
+            $proveedor = Proveedor::select('ID_Proveedor', 'Nombre_Razon_Social_Proveedor')
+                ->where('Nombre_Razon_Social_Proveedor', '=', $Nombre)    
+                ->where('Estado_Proveedor', '=', 1)
+                ->get();
+            DB::commit();
+
+            return $proveedor;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
     public function guardarProveedor($datos){
         try {
             DB::beginTransaction();

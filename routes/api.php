@@ -56,12 +56,13 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
 
         Route::put('/actualizarEstadoProveedor', [ProveedorController::class, 'actualizarEstadoProveedor']);
         Route::put('/actualizarProveedor', [ProveedorController::class, 'actualizarProveedor']);
-        Route::post('/guardarProveedor', [ProveedorController::class, 'guardarProveedor']);
         Route::get('/listarProveedores', [ProveedorController::class, 'listarProveedores']);
+        Route::post('/guardarProveedor', [ProveedorController::class, 'guardarProveedor']);
+        Route::get('/buscarProveedor', [ProveedorController::class, 'buscarProveedor']);
 
         Route::put('/actualizarEstadoProveedor', [CompraController::class, 'actualizarEstadoProveedor']);
-        Route::put('/actualizarProveedor', [CompraController::class, 'actualizarProveedor']);
         Route::get('/listarDetalleCompra', [CompraController::class, 'listarDetalleCompra']);
+        Route::post('/guardarCompra', [CompraController::class, 'guardarCompra']);
         Route::get('/listarCompras', [CompraController::class, 'listarCompras']);
     });
 

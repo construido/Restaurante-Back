@@ -24,6 +24,9 @@ class CompraController extends Controller
         $datos['Proveedor'] = isset($request->Proveedor) ? $request->Proveedor : 0;
         $datos['Total']     = isset($request->Total) ? $request->Total : 0;
 
+        $Productos = [];
+        $Productos = $request->Productos[0]["Precio"];
+
         $compra = new Compra;
         $compra = $compra->guardarCompra($datos);
 

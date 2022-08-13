@@ -13,6 +13,12 @@ class ProveedorController extends Controller
         return $proveedor;
     }
 
+    public function buscarProveedor(Request $request){
+        $proveedor = new Proveedor;
+        $proveedor = $proveedor->buscarProveedor($request->Nombre);
+        return $proveedor;
+    }
+
     public function guardarProveedor(Request $request){
         $datos['CI_NIT']   = isset($request->CI_NIT) ? $request->CI_NIT : 0;
         $datos['Nombre']   = isset($request->Nombre) ? $request->Nombre : '';

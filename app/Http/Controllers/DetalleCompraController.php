@@ -18,17 +18,17 @@ class DetalleCompraController extends Controller
         $detalleCompra = new DetalleCompra;
         $producto      = new Producto;
 
-        for ($i = 0; $i < count($Productos) - 1; $i++) {
-            $productoDetalle['ID']       = $Productos[$i]->Producto;
+        for ($i = 0; $i < count($Productos); $i++) {
+            $productoDetalle['ID']       = $Productos[$i]["ID"];
             $productoDetalle['Tipo']     = $Tipo;
-            $productoDetalle['Cantidad'] = $Productos[$i]->Cantidad;
+            $productoDetalle['Cantidad'] = $Productos[$i]["Cantidad"];
             $producto->actualizarCompraVentaProducto($productoDetalle);
 
-            $detalle['Monto']    = $Productos[$i]->Monto;
+            $detalle['Monto']    = $Productos[$i]["Sub_Total"];
             $detalle['Compra']   = $ID_Compra;
-            $detalle['Precio']   = $Productos[$i]->Precio;
-            $detalle['Cantidad'] = $Productos[$i]->Cantidad;
-            $detalle['Producto'] = $Productos[$i]->Producto;
+            $detalle['Precio']   = $Productos[$i]["Precio"];
+            $detalle['Cantidad'] = $Productos[$i]["Cantidad"];
+            $detalle['Producto'] = $Productos[$i]["ID"];
             $detalleCompra = $detalleCompra->guardarDetalleCompra($detalle);
         }
 
