@@ -13,9 +13,9 @@ class ProveedorController extends Controller
         return $proveedor;
     }
 
-    public function buscarProveedor(Request $request){
+    public function listarSelectProveedor(){
         $proveedor = new Proveedor;
-        $proveedor = $proveedor->buscarProveedor($request->Nombre);
+        $proveedor = $proveedor->listarSelectProveedor();
         return $proveedor;
     }
 

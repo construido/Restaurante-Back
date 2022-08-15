@@ -13,9 +13,9 @@ class CategoriaController extends Controller
         return $categoria;
     }
 
-    public function listarCategorias(){
+    public function listarCategorias(Request $request){
         $categoria = new Categoria;
-        $categoria = $categoria->listarCategorias();
+        $categoria = $categoria->listarCategorias($request);
         return $categoria;
     }
 

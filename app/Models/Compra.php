@@ -27,7 +27,9 @@ class Compra extends Model
                 (DB::raw('CONCAT(empleado.Nombre_Empleado, " " ,empleado.Apellido_Empleado) as Empleado')))
                 ->join('empleado', 'compra.ID_Empleado', 'empleado.ID_Empleado')
                 ->join('proveedor', 'compra.ID_Proveedor', 'proveedor.ID_Proveedor')
-                ->where('Estado_Compra', '=', 1)->get();
+                ->where('Estado_Compra', '=', 1)
+                ->OrderBy('compra.ID_Compra', 'DESC')
+                ->get();
             DB::commit();
 
             return $compra;

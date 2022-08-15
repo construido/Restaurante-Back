@@ -34,16 +34,17 @@ class Categoria extends Model
         }
     }
 
-    public function listarCategorias(){
+    public function listarCategorias($parametros){
         try {
             DB::beginTransaction();
-            $categoria = Categoria::get();
+            $categoria = Categoria::where('Nombre_Categoria', 'like', '%'.$parametros->filters.'%')
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $categoria;
         } catch (Exception $e) {
             DB::rollback();
-            return $e->getMessage(); //throw $th;
+            return $e->getMessage();
         }
     }
 
