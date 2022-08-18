@@ -9,6 +9,7 @@ use App\Http\Controllers\ProductoController;
 use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
+use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 
@@ -50,6 +51,7 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::get('/buscarProducto', [ProductoController::class, 'buscarProducto']);
         
         Route::put('/actualizarEstadoCliente', [ClienteController::class, 'actualizarEstadoCliente']);
+        Route::get('/listarSelectCliente', [ClienteController::class, 'listarSelectCliente']);
         Route::put('/actualizarCliente', [ClienteController::class, 'actualizarCliente']);
         Route::post('/guardarCliente', [ClienteController::class, 'guardarCliente']);
         Route::get('/listarClientes', [ClienteController::class, 'listarClientes']);
@@ -63,6 +65,10 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::get('/listarDetalleCompra', [CompraController::class, 'listarDetalleCompra']);
         Route::post('/guardarCompra', [CompraController::class, 'guardarCompra']);
         Route::get('/listarCompras', [CompraController::class, 'listarCompras']);
+
+        Route::get('/listarDetalleVenta', [VentaController::class, 'listarDetalleVenta']);
+        Route::post('/guardarVenta', [VentaController::class, 'guardarVenta']);
+        Route::get('/listarVentas', [VentaController::class, 'listarVentas']);
     });
 
     Route::group(['middleware' => ['cajero.verify']], function(){

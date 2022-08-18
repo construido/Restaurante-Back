@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Compra;
+use App\Http\Controllers\CajaController;
 use App\Http\Controllers\DetalleCompraController;
 
 class CompraController extends Controller
@@ -24,15 +25,17 @@ class CompraController extends Controller
         $datos['Proveedor'] = isset($request->Proveedor) ? $request->Proveedor : 0;
         $datos['Total']     = isset($request->Total) ? $request->Total : 0;
 
-        $Productos = [];
-        $Productos = $request->Productos[0]["Precio"];
-
         $compra = new Compra;
         $compra = $compra->guardarCompra($datos);
 
         $Tipo          = 'Ingreso';
         $detalleCompra = new DetalleCompraController;
         $detalleCompra = $detalleCompra->guardarDetalle($request->Productos, $compra->ID_Compra, $Tipo);
+
+        $caja = new CajaController;
+        $datos['Tipo'] = 'Salida';
+        $datos['Monto'] = isset($request->Total) ? $request->Total : 0;
+        $caja = $caja->actualizarCaja($request->Productos);
 
         return $detalleCompra;
     }

@@ -18,7 +18,6 @@ class Producto extends Model
         'Nombre_Producto', 'Precio_Compra_P', 'Precio_Venta_P', 'Ingreso_Producto', 'Salida_Producto', 'Stock',
         'Stock_Minimo', 'Foto_Producto', 'Descripcion_Producto','Estado_Producto', 'ID_Categoria'
     ];
-
     public $timestamps = false;
 
     public function listarProductos(){
@@ -35,7 +34,6 @@ class Producto extends Model
             return $e->getMessage();
         }
     }
-
 
     public function buscarProducto($Nombre){
         try {
@@ -116,7 +114,7 @@ class Producto extends Model
             DB::beginTransaction();
             $producto = Producto::findOrFail(trim($datos['ID']));
             $producto->Stock            = $producto->Stock + ($cantidad);
-            $producto->Salida_Producto  = $producto->Salida_Producto - $salida;
+            $producto->Salida_Producto  = $producto->Salida_Producto + $salida;
             $producto->Ingreso_Producto = $producto->Ingreso_Producto + $ingreso;
             $producto->save();
             DB::commit();

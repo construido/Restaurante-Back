@@ -13,6 +13,12 @@ class ClienteController extends Controller
         return $cliente;
     }
 
+    public function listarSelectCliente(){
+        $cliente = new Cliente;
+        $cliente = $cliente->listarSelectCliente();
+        return $cliente;
+    }
+
     public function guardarCliente(Request $request){
         $datos['CI_NIT']   = isset($request->CI_NIT) ? $request->CI_NIT : 0;
         $datos['Nombre']   = isset($request->Nombre) ? $request->Nombre : '';

@@ -30,6 +30,21 @@ class Cliente extends Model
         }
     }
 
+    public function listarSelectCliente(){
+        try {
+            DB::beginTransaction();
+            $cliente = Cliente::select('ID_Cliente', 'Nombre_Razon_Social_Cliente')
+                ->where('Estado_Cliente', '=', 1)
+                ->get();
+            DB::commit();
+
+            return $cliente;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
     public function guardarCliente($datos){
         try {
             DB::beginTransaction();
