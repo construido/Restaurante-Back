@@ -80,12 +80,23 @@ class Caja extends Model
     }
 
     public function actualizarCaja($datos){
+        $salida   = 0;
+        $ingreso  = 0;
+        $monto    = 0;
+
+        if ($datos['Tipo'] == 'Salida'){
+            $monto  = - $datos['Monto'];
+            $salida = $datos['Monto'];
+        }else{
+            $monto   = $datos['Monto'];
+            $ingreso = $datos['Monto'];
+        }
         try {
             DB::beginTransaction();
             $caja = Caja::findOrFail(trim($datos['Caja']));
-            $caja->Ingreso_Caja = trim($datos['Ingreso']);
-            $caja->Salida_Caja  = trim($datos['Salida']);
-            $caja->Saldo_Caja   = trim($datos['Saldo']);
+            $caja->Ingreso_Caja = $caja->Ingreso_Caja + $ingreso;
+            $caja->Salida_Caja  = $caja->Salida_Caja + $salida;
+            $caja->Saldo_Caja   = $caja->Saldo_Caja + ($monto);
             $caja->save();
             DB::commit();
             

@@ -16,11 +16,11 @@ class MovimientoController extends Controller
 
     public function guardarMovimiento($datos){
         $movimiento = new Movimiento;
-        $movimiento['Caja']        = trim($datos['Caja']);
-        $movimiento['Movimiento']  = trim($datos['Tipo']); // 'APERTURA';
-        $movimiento['Movimiento']  = trim($datos['Monto']);
-        $movimiento['Observacion'] = trim($datos['Observacion']); //'APERTURA DE CAJA';
+        $movimiento['Caja']        = $datos['Caja'];
+        $movimiento['Monto']       = $datos['Monto'];
+        $movimiento['Movimiento']  = $datos['Movimiento'];
+        $movimiento['Observacion'] = $datos['Observacion'];
         $movimiento = $movimiento->guardarMovimiento($movimiento);
         return $movimiento;
-}
+    }
 }

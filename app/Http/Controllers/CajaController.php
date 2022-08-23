@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Caja;
+use App\Http\Controllers\MovimientoController;
 
 class CajaController extends Controller
 {
@@ -33,6 +34,14 @@ class CajaController extends Controller
         $datosCaja['Tipo']  = trim($datos['Tipo']);
         $datosCaja['Monto'] = trim($datos['Monto']);
         $caja = $caja->actualizarCaja($datosCaja);
+
+        $movimiento = new MovimientoController;
+        $datosMov['Caja']        = $Caja_ID[0]->ID_Caja;
+        $datosMov['Monto']       = trim($datos['Monto']);
+        $datosMov['Movimiento']  = "COMPRA";
+        $datosMov['Observacion'] = "COMPRA DE PRODUCTOS";
+        $movimiento = $movimiento->guardarMovimiento($datosMov);
+
         return $caja;
     }
 }

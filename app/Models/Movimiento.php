@@ -37,10 +37,10 @@ class Movimiento extends Model
         try {
             DB::beginTransaction();
             $movimiento = new Movimiento;
-            $movimiento->ID_Caja                = trim($datos['Caja']);
-            $movimiento->Tipo_Movimiento        = trim($datos['Tipo']); // 'APERTURA';
-            $movimiento->Monto_Movimiento       = trim($datos['Monto']);
-            $movimiento->Observacion_Movimiento = trim($datos['Observacion']); //'APERTURA DE CAJA';
+            $movimiento->ID_Caja                = $datos['Caja'];
+            $movimiento->Tipo_Movimiento        = $datos['Movimiento'];
+            $movimiento->Monto_Movimiento       = $datos['Monto'];
+            $movimiento->Observacion_Movimiento = $datos['Observacion'];
             $movimiento->save();
             DB::commit();
             
