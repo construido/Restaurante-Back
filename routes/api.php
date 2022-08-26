@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+use App\Http\Controllers\MovimientoController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ProductoController;
@@ -12,6 +13,7 @@ use App\Http\Controllers\CompraController;
 use App\Http\Controllers\VentaController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CajaController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,6 +71,12 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::get('/listarDetalleVenta', [VentaController::class, 'listarDetalleVenta']);
         Route::post('/guardarVenta', [VentaController::class, 'guardarVenta']);
         Route::get('/listarVentas', [VentaController::class, 'listarVentas']);
+
+        Route::post('/aperturaCaja', [CajaController::class, 'aperturaCaja']);
+        Route::get('/listarCajas', [CajaController::class, 'listarCajas']);
+        Route::post('/cierreCaja', [CajaController::class, 'cierreCaja']);
+
+        Route::get('/listarMovimientos', [MovimientoController::class, 'listarMovimientos']);
     });
 
     Route::group(['middleware' => ['cajero.verify']], function(){

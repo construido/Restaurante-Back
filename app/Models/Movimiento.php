@@ -17,12 +17,12 @@ class Movimiento extends Model
     protected $fillable   = ['Tipo_Movimiento', 'Monto_Movimiento', 'Observacion_Movimiento','Estado_Movimiento', 'ID_Caja'];
     public $timestamps = false;
 
-    public function ListarMovimientos($Caja){
+    public function listarMovimientos($Caja){
         try {
             DB::beginTransaction();
             $movimiento = Movimiento::select('movimiento.*')
                 ->join('caja', 'movimiento.ID_Caja', 'caja.ID_Caja')
-                ->where('movimiento.ID_Caja', '=', $Caja)
+                ->where('caja.ID_Caja', '=', $Caja)
                 ->get();
             DB::commit();
 

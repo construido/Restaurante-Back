@@ -8,9 +8,9 @@ use App\Http\Controllers\MovimientoController;
 
 class CajaController extends Controller
 {
-    public function ListarCajas(){
+    public function listarCajas(Request $request){
         $caja = new Caja;
-        $caja = $caja->listarCajas();
+        $caja = $caja->listarCajas($request);
         return $caja;
     }
 
@@ -20,10 +20,19 @@ class CajaController extends Controller
         return $caja;
     }
 
-    public function AperturaCaja(Request $request){
+    public function aperturaCaja(Request $request){
         $caja = new Caja;
-        $Inicio = $request->Inicio > 0 ? $request->Inicio : 0;
-        $caja = $caja->AperturaCaja($Inicio);
+        $datos['Inicio']      = $request->Inicio > 0 ? $request->Inicio : 0;
+        $datos['Observacion'] = isset($request->Observacion) ? $request->Observacion : '';
+        $caja = $caja->aperturaCaja($datos);
+
+        $movimiento = new MovimientoController;
+        $datosMov['Caja']        = $caja->ID_Caja;
+        $datosMov['Monto']       = $request->Inicio > 0 ? $request->Inicio : 0;
+        $datosMov['Movimiento']  = 'APERTURA';
+        $datosMov['Observacion'] = 'APERTURA DE CAJA';
+        $movimiento = $movimiento->guardarMovimiento($datosMov);
+
         return $caja;
     }
 
@@ -38,8 +47,24 @@ class CajaController extends Controller
         $movimiento = new MovimientoController;
         $datosMov['Caja']        = $Caja_ID[0]->ID_Caja;
         $datosMov['Monto']       = trim($datos['Monto']);
-        $datosMov['Movimiento']  = "COMPRA";
-        $datosMov['Observacion'] = "COMPRA DE PRODUCTOS";
+        $datosMov['Movimiento']  = trim($datos['Movimiento']);
+        $datosMov['Observacion'] = trim($datos['Observacion']);
+        $movimiento = $movimiento->guardarMovimiento($datosMov);
+
+        return $caja;
+    }
+
+    public function cierreCaja(Request $request){
+        $caja = new Caja;
+        $datos['ID']          = $request->ID;
+        $datos['Observacion'] = isset($request->Observacion) ? $request->Observacion : '';
+        $caja = $caja->cierreCaja($datos);
+
+        $movimiento = new MovimientoController;
+        $datosMov['Caja']        = $request->ID;
+        $datosMov['Monto']       = 0;
+        $datosMov['Movimiento']  = 'CIERRE';
+        $datosMov['Observacion'] = 'CIERRE DE CAJA';
         $movimiento = $movimiento->guardarMovimiento($datosMov);
 
         return $caja;

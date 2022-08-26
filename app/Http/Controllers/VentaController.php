@@ -27,9 +27,16 @@ class VentaController extends Controller
         $venta = new Venta;
         $venta = $venta->guardarVenta($datos);
 
-        $Tipo          = 'Salida';
+        $Tipo         = 'Salida';
         $detalleVenta = new DetalleVentaController;
         $detalleVenta = $detalleVenta->guardarDetalle($request->Productos, $venta->ID_Venta, $Tipo);
+
+        $caja = new CajaController;
+        $datos['Tipo']        = 'Ingreso';
+        $datos['Monto']       = isset($request->Total) ? $request->Total : 0;
+        $datos['Movimiento']  = 'VENTA';
+        $datos['Observacion'] = 'VENTA DE PRODUCTOS';
+        $caja = $caja->actualizarCaja($datos);
 
         return $detalleVenta;
     }

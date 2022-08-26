@@ -38,6 +38,7 @@ class Categoria extends Model
         try {
             DB::beginTransaction();
             $categoria = Categoria::where('Nombre_Categoria', 'like', '%'.$parametros->filters.'%')
+                ->orderBy('ID_Categoria', 'DESC')
                 ->paginate($parametros->rows);
             DB::commit();
 

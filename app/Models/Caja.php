@@ -27,13 +27,13 @@ class Caja extends Model
         'Saldo_Caja', 'Observacion', 'Estado_Caja', 'ID_Empleado'];
     public $timestamps = false;
 
-    public function ListarCajas(){
+    public function listarCajas($parametros){
         try {
             DB::beginTransaction();
             $caja = Caja::select('caja.*', (DB::raw('CONCAT(empleado.Nombre_Empleado, " " ,empleado.Apellido_Empleado) as Empleado')))
                 ->join('empleado', 'caja.ID_Empleado', 'empleado.ID_Empleado')
-                ->orderBy('ID_Caja', 'DESC')
-                ->get();
+                ->orderBy('caja.ID_Caja', 'DESC')
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $caja;
@@ -60,13 +60,14 @@ class Caja extends Model
         }
     }
 
-    public function AperturaCaja($Inicio){
+    public function aperturaCaja($datos){
         try {
             DB::beginTransaction();
             $caja = new Caja;
             $caja->Fecha_Apertura = date('Y-m-d');
-            $caja->Saldo_Inicial  = $Inicio;
-            $caja->Observacion    = 'APERTURA DE CAJA';
+            $caja->Saldo_Inicial  = $datos['Inicio'];
+            $caja->Saldo_Caja     = $datos['Inicio'];
+            $caja->Observacion    = $datos['Observacion'];
             $caja->Estado_Caja    = 1;
             $caja->ID_Empleado    = JWTAuth::user()->ID_Empleado;
             $caja->save();
@@ -107,12 +108,13 @@ class Caja extends Model
         }
     }
 
-    public function CierreCaja($datos){
+    public function cierreCaja($datos){
         try {
             DB::beginTransaction();
-            $caja = Caja::findOrFail(trim($datos['ID']));
+            $caja = Caja::findOrFail($datos['ID']);
             $caja->Fecha_Cierre = date('Y-m-d');
-            $caja->Observacion  = 'CIERRE DE CAJA';
+            $caja->Observacion  = trim($datos['Observacion']);
+            $caja->Estado_Caja  = 2;
             $caja->save();
             DB::commit();
             

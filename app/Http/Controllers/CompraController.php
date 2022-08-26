@@ -33,8 +33,10 @@ class CompraController extends Controller
         $detalleCompra = $detalleCompra->guardarDetalle($request->Productos, $compra->ID_Compra, $Tipo);
 
         $caja = new CajaController;
-        $datos['Tipo']  = 'Salida';
-        $datos['Monto'] = isset($request->Total) ? $request->Total : 0;
+        $datos['Tipo']        = 'Salida';
+        $datos['Monto']       = isset($request->Total) ? $request->Total : 0;
+        $datos['Movimiento']  = 'COMPRA';
+        $datos['Observacion'] = 'COMPRA DE PRODUCTOS';
         $caja = $caja->actualizarCaja($datos);
 
         return $detalleCompra;

@@ -8,9 +8,9 @@ use App\Models\Movimiento;
 class MovimientoController extends Controller
 {
     
-    public function ListarMovimientos(Request $request){
+    public function listarMovimientos(Request $request){
             $movimiento = new Movimiento;
-            $movimiento = $movimiento->ListarMovimientos($request->Caja);
+            $movimiento = $movimiento->listarMovimientos($request->Caja);
             return $movimiento;
     }
 
