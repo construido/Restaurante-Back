@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\MovimientoController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CategoriaController;
 use App\Http\Controllers\ProveedorController;
 use App\Http\Controllers\ProductoController;
@@ -75,8 +76,15 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::post('/aperturaCaja', [CajaController::class, 'aperturaCaja']);
         Route::get('/listarCajas', [CajaController::class, 'listarCajas']);
         Route::post('/cierreCaja', [CajaController::class, 'cierreCaja']);
+        Route::post('/buscarCaja', [CajaController::class, 'buscarCaja']);
 
+        Route::post('/ingresoSalidaCaja', [MovimientoController::class, 'ingresoSalidaCaja']);
         Route::get('/listarMovimientos', [MovimientoController::class, 'listarMovimientos']);
+
+        Route::post('/cantidadProductos', [DashboardController::class, 'cantidadProductos']);
+        Route::post('/cantidadClientes', [DashboardController::class, 'cantidadClientes']);
+        Route::post('/cantidadCompras', [DashboardController::class, 'cantidadCompras']);
+        Route::post('/cantidadVentas', [DashboardController::class, 'cantidadVentas']);
     });
 
     Route::group(['middleware' => ['cajero.verify']], function(){

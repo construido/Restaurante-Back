@@ -17,6 +17,21 @@ class Cliente extends Model
     protected $fillable   = ['Nombre_Razon_Social_Cliente', 'CI_NIT_Cliente', 'Telefono_Cliente', 'Correo_Cliente', 'Estado_Cliente'];
     public $timestamps = false;
 
+    public function cantidadClientes(){
+        try {
+            DB::beginTransaction();
+            $cliente = Cliente::select(DB::raw('COUNT(ID_Cliente) as Cliente'))
+                ->where('Estado_Cliente', '=', 1)
+                ->get();
+            DB::commit();
+
+            return $cliente;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
     public function listarClientes(){
         try {
             DB::beginTransaction();

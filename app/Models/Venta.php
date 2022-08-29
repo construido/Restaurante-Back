@@ -18,6 +18,22 @@ class Venta extends Model
     protected $fillable   = ['Fecha_Venta', 'Monto_Total_Venta', 'Estado_Venta', 'ID_Empleado', 'ID_Cliente'];
     public $timestamps = false;
 
+    public function cantidadVentas(){
+        try {
+            DB::beginTransaction();
+            $venta = Venta::select(DB::raw('COUNT(ID_Venta) as Venta'), DB::raw('SUM(Monto_Total_Venta) as Total'))
+                ->where('Fecha_Venta', '=', date('Y-m-d'))
+                ->where('Estado_Venta', '=', 1)
+                ->get();
+            DB::commit();
+
+            return $venta;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
     public function listarVentas(){
         try {
             DB::beginTransaction();

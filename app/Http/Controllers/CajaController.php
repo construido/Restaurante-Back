@@ -21,6 +21,9 @@ class CajaController extends Controller
     }
 
     public function aperturaCaja(Request $request){
+        $buscar = $this->buscarCaja();
+        if (isset($buscar[0]->ID_Caja)) return 1;
+
         $caja = new Caja;
         $datos['Inicio']      = $request->Inicio > 0 ? $request->Inicio : 0;
         $datos['Observacion'] = isset($request->Observacion) ? $request->Observacion : '';

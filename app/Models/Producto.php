@@ -20,6 +20,21 @@ class Producto extends Model
     ];
     public $timestamps = false;
 
+    public function cantidadProductos(){
+        try {
+            DB::beginTransaction();
+            $producto = Producto::select(DB::raw('COUNT(ID_Producto) as Producto'))
+                ->where('Estado_Producto', '=', 1)
+                ->get();
+            DB::commit();
+
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
     public function listarProductos(){
         try {
             DB::beginTransaction();
