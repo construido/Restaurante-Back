@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Venta;
+
 use App\Http\Controllers\DetalleVentaController;
+use App\Models\Venta;
+use Exception;
 
 class VentaController extends Controller
 {
-    public function listarVentas(){
+    public function listarVentas(Request $request){
         $venta = new Venta;
-        $venta = $venta->listarVentas();
+        $venta = $venta->listarVentas($request);
         return $venta;
     }
 
@@ -20,24 +22,38 @@ class VentaController extends Controller
         return $detalleVenta;
     }
 
+    public function validarDatos(Request $request){
+        $this->validate($request, [
+            'Total'     => 'required',
+            'Cliente'   => 'required',
+            'Productos' => 'required'
+        ]);
+    }
+
     public function guardarVenta(Request $request){
-        $datos['Cliente'] = isset($request->Cliente) ? $request->Cliente : 0;
-        $datos['Total']   = isset($request->Total) ? $request->Total : 0;
+        $this->validarDatos($request);
 
-        $venta = new Venta;
-        $venta = $venta->guardarVenta($datos);
+        try {
+            $datos['Total']   = $request->Total;
+            $datos['Cliente'] = $request->Cliente["ID_Cliente"];
 
-        $Tipo         = 'Salida';
-        $detalleVenta = new DetalleVentaController;
-        $detalleVenta = $detalleVenta->guardarDetalle($request->Productos, $venta->ID_Venta, $Tipo);
+            $venta = new Venta;
+            $venta = $venta->guardarVenta($datos);
 
-        $caja = new CajaController;
-        $datos['Tipo']        = 'Ingreso';
-        $datos['Monto']       = isset($request->Total) ? $request->Total : 0;
-        $datos['Movimiento']  = 'VENTA';
-        $datos['Observacion'] = 'VENTA DE PRODUCTOS';
-        $caja = $caja->actualizarCaja($datos);
+            $Tipo         = 'Salida';
+            $detalleVenta = new DetalleVentaController;
+            $detalleVenta = $detalleVenta->guardarDetalle($request->Productos, $venta->ID_Venta, $Tipo);
 
-        return $detalleVenta;
+            $caja = new CajaController;
+            $datos['Tipo']        = 'Ingreso';
+            $datos['Monto']       = $request->Total;
+            $datos['Movimiento']  = 'VENTA';
+            $datos['Observacion'] = 'VENTA DE PRODUCTOS';
+            $caja = $caja->actualizarCaja($datos);
+
+            return $venta;
+        } catch (Exception $err) {
+            return $err->getMessage();
+        }
     }
 }

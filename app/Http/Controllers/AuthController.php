@@ -18,15 +18,15 @@ class AuthController extends Controller
 
     public function authenticate(Request $request){
         
-        /*$this->validate($request,[
+        $this->validate($request,[
             'Usuario'    => 'required',
             'password' => 'required',
-        ]);*/
+        ]);
 
-        $request->validate([
+        /*$request->validate([
             'Usuario'  => 'required',
             'password' => 'required',
-        ]);
+        ]);*/
 
         $credential = $request->only('Usuario', 'password');
 

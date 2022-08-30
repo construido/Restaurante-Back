@@ -71,10 +71,9 @@ class Producto extends Model
             DB::beginTransaction();
             $producto = new Producto;
             $producto->Precio_Venta_P       = trim($datos['Venta']);
-            $producto->Stock                = trim($datos['Stock']);
+            $producto->Stock                = trim($datos['Ingreso']);
             $producto->Nombre_Producto      = trim($datos['Nombre']);
             $producto->Precio_Compra_P      = trim($datos['Compra']);
-            $producto->Salida_Producto      = trim($datos['Salida']);
             $producto->Stock_Minimo         = trim($datos['Minimo']);
             $producto->Ingreso_Producto     = trim($datos['Ingreso']);
             $producto->ID_Categoria         = trim($datos['Categoria']);
@@ -94,10 +93,9 @@ class Producto extends Model
             DB::beginTransaction();
             $producto = Producto::findOrFail(trim($datos['ID']));
             $producto->Precio_Venta_P       = trim($datos['Venta']);
-            $producto->Stock                = trim($datos['Stock']);
+            $producto->Stock                = trim($datos['Ingreso']);
             $producto->Nombre_Producto      = trim($datos['Nombre']);
             $producto->Precio_Compra_P      = trim($datos['Compra']);
-            $producto->Salida_Producto      = trim($datos['Salida']);
             $producto->Stock_Minimo         = trim($datos['Minimo']);
             $producto->Ingreso_Producto     = trim($datos['Ingreso']);
             $producto->ID_Categoria         = trim($datos['Categoria']);

@@ -34,7 +34,7 @@ class Venta extends Model
         }
     }
 
-    public function listarVentas(){
+    public function listarVentas($parametros){
         try {
             DB::beginTransaction();
             $venta = Venta::select('venta.*', 'cliente.Nombre_Razon_Social_cliente as Cliente',
@@ -43,7 +43,7 @@ class Venta extends Model
                 ->join('cliente', 'venta.ID_cliente', 'cliente.ID_cliente')
                 ->where('Estado_Venta', '=', 1)
                 ->OrderBy('venta.ID_Venta', 'DESC')
-                ->get();
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $venta;
