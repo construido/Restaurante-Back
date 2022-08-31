@@ -35,12 +35,14 @@ class Producto extends Model
         }
     }
 
-    public function listarProductos(){
+    public function listarProductos($parametros){
         try {
             DB::beginTransaction();
             $producto = Producto::select('producto.*', 'categoria.Nombre_Categoria as Categoria')
                 ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
-                ->get();
+                ->where('Nombre_Producto', 'like', '%'.$parametros->filters.'%')
+                ->orderBy('ID_Producto', 'DESC')
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $producto;
@@ -70,13 +72,13 @@ class Producto extends Model
         try {
             DB::beginTransaction();
             $producto = new Producto;
-            $producto->Precio_Venta_P       = trim($datos['Venta']);
-            $producto->Stock                = trim($datos['Ingreso']);
+            $producto->Precio_Venta_P       = $datos['Venta'];
+            $producto->Stock                = $datos['Ingreso'];
             $producto->Nombre_Producto      = trim($datos['Nombre']);
-            $producto->Precio_Compra_P      = trim($datos['Compra']);
-            $producto->Stock_Minimo         = trim($datos['Minimo']);
-            $producto->Ingreso_Producto     = trim($datos['Ingreso']);
-            $producto->ID_Categoria         = trim($datos['Categoria']);
+            $producto->Precio_Compra_P      = $datos['Compra'];
+            $producto->Stock_Minimo         = $datos['Minimo'];
+            $producto->Ingreso_Producto     = $datos['Ingreso'];
+            $producto->ID_Categoria         = $datos['Categoria'];
             $producto->Descripcion_Producto = trim($datos['Descripcion']);
             $producto->save();
             DB::commit();

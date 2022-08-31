@@ -3,15 +3,17 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Compra;
-use App\Http\Controllers\CajaController;
+
 use App\Http\Controllers\DetalleCompraController;
+use App\Http\Controllers\CajaController;
+use App\Models\Compra;
+use Exception;
 
 class CompraController extends Controller
 {
-    public function listarCompras(){
+    public function listarCompras(Request $request){
         $compra = new Compra;
-        $compra = $compra->listarCompras();
+        $compra = $compra->listarCompras($request);
         return $compra;
     }
 
@@ -22,8 +24,14 @@ class CompraController extends Controller
     }
 
     public function guardarCompra(Request $request){
-        $datos['Proveedor'] = isset($request->Proveedor) ? $request->Proveedor : 0;
-        $datos['Total']     = isset($request->Total) ? $request->Total : 0;
+        $this->validate($request, [
+            'Total'     => 'required',
+            'Proveedor' => 'required',
+            'Productos' => 'required'
+        ]);
+        
+        $datos['Total']     = $request->Total;
+        $datos['Proveedor'] = $request->Proveedor["ID_Proveedor"];
 
         $compra = new Compra;
         $compra = $compra->guardarCompra($datos);
@@ -34,7 +42,7 @@ class CompraController extends Controller
 
         $caja = new CajaController;
         $datos['Tipo']        = 'Salida';
-        $datos['Monto']       = isset($request->Total) ? $request->Total : 0;
+        $datos['Monto']       = $request->Total;
         $datos['Movimiento']  = 'COMPRA';
         $datos['Observacion'] = 'COMPRA DE PRODUCTOS';
         $caja = $caja->actualizarCaja($datos);

@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Cliente;
+use Exception;
 
 class ClienteController extends Controller
 {
-    public function listarClientes(){
+    public function listarClientes(Request $request){
         $cliente = new Cliente;
-        $cliente = $cliente->listarClientes();
+        $cliente = $cliente->listarClientes($request);
         return $cliente;
     }
 
@@ -20,26 +21,50 @@ class ClienteController extends Controller
     }
 
     public function guardarCliente(Request $request){
-        $datos['CI_NIT']   = isset($request->CI_NIT) ? $request->CI_NIT : 0;
-        $datos['Nombre']   = isset($request->Nombre) ? $request->Nombre : '';
-        $datos['Correo']   = isset($request->Correo) ? $request->Correo : '';
-        $datos['Telefono'] = isset($request->Telefono) ? $request->Telefono : 0;
+        $this->validate($request,[
+            'Nombre' => 'required',
+            'Correo' => 'required',
+            'CI_NIT' => 'required',
+            //'CI_NIT' => 'required|unique:cliente',
+        ]);
 
-        $cliente = new Cliente;
-        $cliente = $cliente->guardarCliente($datos);
-        return $cliente;
+        try {
+            $datos['CI_NIT']   = $request->CI_NIT;
+            $datos['Nombre']   = $request->Nombre;
+            $datos['Correo']   = $request->Correo;
+            $datos['Telefono'] = $request->Telefono;
+    
+            $cliente = new Cliente;
+            $cliente = $cliente->guardarCliente($datos);
+            return $cliente;
+        } catch (Exception $err) {
+            $err->getMessage();
+        }
+
     }
 
     public function actualizarCliente(Request $request){
-        $datos['ID']       = isset($request->ID) ? $request->ID : '';
-        $datos['CI_NIT']   = isset($request->CI_NIT) ? $request->CI_NIT : 0;
-        $datos['Nombre']   = isset($request->Nombre) ? $request->Nombre : '';
-        $datos['Correo']   = isset($request->Correo) ? $request->Correo : '';
-        $datos['Telefono'] = isset($request->Telefono) ? $request->Telefono : 0;
+        $this->validate($request,[
+            'ID'     => 'required',
+            'Nombre' => 'required',
+            'Correo' => 'required',
+            'CI_NIT' => 'required',
+        ]);
 
-        $cliente = new Cliente;
-        $cliente = $cliente->actualizarCliente($datos);
-        return $cliente;
+        try {
+            $datos['ID']       = $request->ID;
+            $datos['CI_NIT']   = $request->CI_NIT;
+            $datos['Nombre']   = $request->Nombre;
+            $datos['Correo']   = $request->Correo;
+            $datos['Telefono'] = $request->Telefono;
+    
+            $cliente = new Cliente;
+            $cliente = $cliente->actualizarCliente($datos);
+            return $cliente;
+        } catch (Exception $err) {
+            $err->getMessage();
+        }
+
     }
 
     public function actualizarEstadoCliente(Request $request){

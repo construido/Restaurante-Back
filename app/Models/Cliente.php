@@ -32,10 +32,12 @@ class Cliente extends Model
         }
     }
 
-    public function listarClientes(){
+    public function listarClientes($parametros){
         try {
             DB::beginTransaction();
-            $cliente = Cliente::get();
+            $cliente = Cliente::where('Nombre_Razon_Social_Cliente', 'like', '%'.$parametros->filters.'%')
+            ->orderBy('ID_Cliente', 'DESC')
+            ->paginate($parametros->rows);
             DB::commit();
 
             return $cliente;

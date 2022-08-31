@@ -23,11 +23,6 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        /*$request->validate([
-            'Usuario'  => 'required',
-            'password' => 'required',
-        ]);*/
-
         $credential = $request->only('Usuario', 'password');
 
         try{

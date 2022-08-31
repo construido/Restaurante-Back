@@ -17,7 +17,7 @@ class CajeroMiddleware
     public function handle(Request $request, Closure $next)
     {
         $user = $request->get('login');
-        if($user['Estado_Login'] != '1' and $user['Estado_Login'] != '2'){
+        if(/*$user['Estado_Login'] != '1' and*/ $user['Estado_Login'] != '2'){
             return \response()->json([
                 'status' => false,
                 'error' => 'Permise denied, sólo cajero y administrador'

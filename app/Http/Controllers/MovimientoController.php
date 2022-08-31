@@ -5,14 +5,14 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Movimiento;
 use App\Models\Caja;
+use Exception;
 
 class MovimientoController extends Controller
 {
-    
     public function listarMovimientos(Request $request){
-            $movimiento = new Movimiento;
-            $movimiento = $movimiento->listarMovimientos($request->Caja);
-            return $movimiento;
+        $movimiento = new Movimiento;
+        $movimiento = $movimiento->listarMovimientos($request->Caja);
+        return $movimiento;
     }
 
     public function guardarMovimiento($datos){
@@ -26,19 +26,30 @@ class MovimientoController extends Controller
     }
 
     public function ingresoSalidaCaja(Request $request){
-        $datos['Caja']  = $request->Caja;
-        $datos['Tipo']  = $request->Tipo;
-        $datos['Monto'] = $request->Monto;
+        $this->validate($request, [
+            'Caja'  => 'required',
+            'Tipo'  => 'required',
+            'Monto' => 'required',
+            'Observacion'=> 'required'
+        ]);
 
-        $caja = new Caja;
-        $caja->actualizarCaja($datos);
-
-        $movimiento['Caja']        = $request->Caja;
-        $movimiento['Monto']       = $request->Monto;
-        $movimiento['Movimiento']  = $request->Tipo == 'Ingreso' ? 'INGRESO' : 'SALIDA';
-        $movimiento['Observacion'] = $request->Observacion;
-        $movimiento = $this->guardarMovimiento($movimiento);
-
-        return $movimiento;
+        try {
+            $datos['Caja']  = $request->Caja;
+            $datos['Tipo']  = $request->Tipo;
+            $datos['Monto'] = $request->Monto;
+    
+            $caja = new Caja;
+            $caja->actualizarCaja($datos);
+    
+            $movimiento['Caja']        = $request->Caja;
+            $movimiento['Monto']       = $request->Monto;
+            $movimiento['Movimiento']  = $request->Tipo == 'Ingreso' ? 'INGRESO' : 'SALIDA';
+            $movimiento['Observacion'] = $request->Observacion;
+            $movimiento = $this->guardarMovimiento($movimiento);
+    
+            return $movimiento;
+        } catch (Exception $err) {
+            return $err->getMessage();
+        }
     }
 }

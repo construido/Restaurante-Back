@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Controllers\DetalleVentaController;
+use App\Http\Controllers\CajaController;
 use App\Models\Venta;
 use Exception;
 

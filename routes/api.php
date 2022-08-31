@@ -81,14 +81,20 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::post('/ingresoSalidaCaja', [MovimientoController::class, 'ingresoSalidaCaja']);
         Route::get('/listarMovimientos', [MovimientoController::class, 'listarMovimientos']);
 
+        /*Route::post('/cantidadProductos', [DashboardController::class, 'cantidadProductos']);
+        Route::post('/cantidadClientes', [DashboardController::class, 'cantidadClientes']);
+        Route::post('/cantidadCompras', [DashboardController::class, 'cantidadCompras']);
+        Route::post('/cantidadVentas', [DashboardController::class, 'cantidadVentas']);*/
+    });
+
+    //Route::group(['middleware' => ['cajero.verify']], function(){
+        Route::get('/listarCategorias', [CategoriaController::class, 'listarCategorias']);
+        Route::get('/listarClientes', [ClienteController::class, 'listarClientes']);
+        Route::get('/listarCajas', [CajaController::class, 'listarCajas']);
+
         Route::post('/cantidadProductos', [DashboardController::class, 'cantidadProductos']);
         Route::post('/cantidadClientes', [DashboardController::class, 'cantidadClientes']);
         Route::post('/cantidadCompras', [DashboardController::class, 'cantidadCompras']);
         Route::post('/cantidadVentas', [DashboardController::class, 'cantidadVentas']);
-    });
-
-    Route::group(['middleware' => ['cajero.verify']], function(){
-        Route::get('/listarCategorias', [CategoriaController::class, 'listarCategorias']);
-        Route::get('/listarEmpleados', [EmpleadoController::class, 'listarEmpleados']);
-    });
+    //});
 });

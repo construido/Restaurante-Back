@@ -19,9 +19,8 @@ class AdminMiddleware
         $user = $request->get('login');
         if($user['Estado_Login'] != '1'){
             return \response()->json([
-                'status' => false,
-                'error' => 'Permise denied, sólo administrador'
-            ]);
+                'error' => 'Permiso denegado, sólo administrador'
+            ], 403);
         }
         return $next($request);
     }

@@ -7,9 +7,9 @@ use App\Models\Producto;
 
 class ProductoController extends Controller
 {
-    public function listarProductos(){
+    public function listarProductos(Request $request){
         $producto = new Producto;
-        $producto = $producto->listarProductos();
+        $producto = $producto->listarProductos($request);
         return $producto;
     }
 
@@ -20,32 +20,57 @@ class ProductoController extends Controller
     }
 
     public function guardarProducto(Request $request){
-        $datos['Venta']        = isset($request->Venta) ? $request->Venta : 0;
-        $datos['Minimo']       = isset($request->Minimo) ? $request->Minimo : 10;
-        $datos['Nombre']       = isset($request->Nombre) ? $request->Nombre : '';
-        $datos['Compra']       = isset($request->Compra) ? $request->Compra : 0;
-        $datos['Ingreso']      = isset($request->Ingreso) ? $request->Ingreso : 0;
-        $datos['Categoria']    = isset($request->Categoria) ? $request->Categoria : 0;
-        $datos['Descripcion']  = isset($request->Descripcion) ? $request->Descripcion : '';
+        $this->validate($request,[
+            'Venta'     => 'required',
+            'Nombre'    => 'required',
+            'Compra'    => 'required',
+            'Categoria' => 'required',
+        ]);
 
-        $producto = new Producto;
-        $producto = $producto->guardarProducto($datos);
-        return $producto;
+        try {
+            $datos['Venta']       = $request->Venta;
+            $datos['Minimo']      = $request->Minimo;
+            $datos['Nombre']      = $request->Nombre;
+            $datos['Compra']      = $request->Compra;
+            $datos['Ingreso']     = $request->Ingreso;
+            $datos['Categoria']   = $request->Categoria;
+            $datos['Descripcion'] = $request->Descripcion;
+
+            $producto = new Producto;
+            $producto = $producto->guardarProducto($datos);
+            return $producto;
+        } catch (Exception $err) {
+            return $err->getMessage();
+        }
     }
 
     public function actualizarProducto(Request $request){
-        $datos['ID']           = isset($request->ID) ? $request->ID : '';
-        $datos['Venta']        = isset($request->Venta) ? $request->Venta : 0;
-        $datos['Minimo']       = isset($request->Minimo) ? $request->Minimo : 10;
-        $datos['Nombre']       = isset($request->Nombre) ? $request->Nombre : '';
-        $datos['Compra']       = isset($request->Compra) ? $request->Compra : 0;
-        $datos['Ingreso']      = isset($request->Ingreso) ? $request->Ingreso : 0;
-        $datos['Categoria']    = isset($request->Categoria) ? $request->Categoria : 0;
-        $datos['Descripcion']  = isset($request->Descripcion) ? $request->Descripcion : '';
+        $this->validate($request,[
+            'ID'        => 'required',
+            'Venta'     => 'required',
+            'Minimo'    => 'required',
+            'Nombre'    => 'required',
+            'Compra'    => 'required',
+            'Ingreso'   => 'required',
+            'Categoria' => 'required',
+        ]);
 
-        $producto = new Producto;
-        $producto = $producto->actualizarProducto($datos);
-        return $producto;
+        try {
+            $datos['ID']          = $request->ID;
+            $datos['Venta']       = $request->Venta;
+            $datos['Minimo']      = $request->Minimo;
+            $datos['Nombre']      = $request->Nombre;
+            $datos['Compra']      = $request->Compra;
+            $datos['Ingreso']     = $request->Ingreso;
+            $datos['Categoria']   = $request->Categoria;
+            $datos['Descripcion'] = $request->Descripcion;
+    
+            $producto = new Producto;
+            $producto = $producto->actualizarProducto($datos);
+            return $producto;
+        } catch (Exception $err) {
+            return $err->getMessage();
+        }
     }
 
     public function actualizarEstadoProducto(Request $request){

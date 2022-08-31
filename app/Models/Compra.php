@@ -36,7 +36,7 @@ class Compra extends Model
         }
     }
 
-    public function listarCompras(){
+    public function listarCompras($parametros){
         try {
             DB::beginTransaction();
             $compra = Compra::select('compra.*', 'proveedor.Nombre_Razon_Social_Proveedor as Proveedor',
@@ -45,7 +45,7 @@ class Compra extends Model
                 ->join('proveedor', 'compra.ID_Proveedor', 'proveedor.ID_Proveedor')
                 ->where('Estado_Compra', '=', 1)
                 ->OrderBy('compra.ID_Compra', 'DESC')
-                ->get();
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $compra;
