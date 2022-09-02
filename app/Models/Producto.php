@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+use DateTime;
 use Exception;
 use DB;
 
@@ -19,6 +20,59 @@ class Producto extends Model
         'Stock_Minimo', 'Foto_Producto', 'Descripcion_Producto','Estado_Producto', 'ID_Categoria'
     ];
     public $timestamps = false;
+
+    public function porcentajeProductos(){
+        try {
+            DB::beginTransaction();
+            $producto = Producto::select('Nombre_Producto', 'Nombre_Categoria',
+                (DB::raw('CONCAT(ROUND(SUM((Cantidad_venta / ( SELECT SUM( Cantidad_venta ) FROM producto, detalle_venta, venta
+                    WHERE detalle_venta.ID_Producto = producto.ID_Producto AND detalle_venta.ID_venta = venta.ID_venta
+                    AND YEAR(Fecha_Venta) = YEAR("'.date('Y-m-d').'") AND MONTH(Fecha_Venta) = MONTH("'.date('Y-m-d').'")) * 100 )), 2), "%") as Porcentaje')))
+                ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
+                ->join('detalle_venta', 'producto.ID_Producto', 'detalle_venta.ID_Producto')
+                ->join('venta', 'detalle_venta.ID_Venta', 'venta.ID_Venta')
+                ->where(DB::raw('YEAR(venta.Fecha_Venta)'), '=', DB::raw('YEAR("'.date('Y-m-d').'")'))
+                ->where(DB::raw('MONTH(venta.Fecha_Venta)'), '=', DB::raw('MONTH("'.date('Y-m-d').'")'))
+                ->groupBy('detalle_venta.ID_Producto')
+                ->orderBy('Porcentaje', 'DESC')
+                ->limit(3)
+                ->get();
+            DB::commit();
+
+            /*SELECT detalle_venta.ID_Producto, Nombre_Producto, Nombre_Categoria, sum(Cantidad_Venta)/(SELECT SUM(Cantidad_Venta) 
+                FROM detalle_venta
+                JOIN venta on detalle_venta.ID_Venta = venta.ID_Venta 
+                WHERE YEAR(Fecha_Venta) = YEAR('2022-08-01') AND MONTH(Fecha_Venta) = MONTH('2022-08-30')) * 100 as Porcentaje
+            FROM detalle_venta
+            JOIN producto on detalle_venta.ID_Producto = producto.ID_Producto
+            JOIN venta on detalle_venta.ID_Venta = venta.ID_Venta
+            JOIN categoria on producto.ID_Categoria = categoria.ID_Categoria
+            WHERE YEAR(Fecha_Venta) = YEAR('2022-08-01') AND MONTH(Fecha_Venta) = MONTH('2022-08-30')
+            GROUP BY detalle_venta.ID_Producto
+            ORDER BY Porcentaje DESC;*/
+
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function productoStock(){
+        try {
+            DB::beginTransaction();
+            $producto = Producto::select('Nombre_Producto', 'Nombre_Categoria', 'Stock')
+                ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
+                ->whereColumn('Stock', '<=', 'Stock_Minimo')
+                ->get();
+            DB::commit();
+            
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
 
     public function cantidadProductos(){
         try {

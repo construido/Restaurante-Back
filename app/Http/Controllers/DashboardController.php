@@ -35,9 +35,15 @@ class DashboardController extends Controller
         return $cliente;
     }
 
-    public function productosStockMinimo(){
+    public function porcentajeProductos(){
         $producto = new Producto;
-        $producto = $producto->productosStockMinimo();
+        $producto = $producto->porcentajeProductos();
+        return $producto;
+    }
+
+    public function productoStock(){
+        $producto = new Producto;
+        $producto = $producto->productoStock();
         return $producto;
     }
 }

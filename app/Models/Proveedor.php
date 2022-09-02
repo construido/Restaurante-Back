@@ -17,10 +17,13 @@ class Proveedor extends Model
     protected $fillable   = ['Nombre_Razon_Social_Proveedor', 'CI_NIT_Proveedor', 'Telefono_Proveedor', 'Correo_Proveedor', 'Estado_Proveedor'];
     public $timestamps = false;
 
-    public function listarProveedores(){
+    public function listarProveedores($parametros){
         try {
             DB::beginTransaction();
-            $proveedor = Proveedor::get();
+            $proveedor = Proveedor::where('Nombre_Razon_Social_Proveedor', 'like', '%'.$parametros->filters.'%')
+                ->where('Nombre_Razon_Social_Proveedor', 'like', '%'.$parametros->filters.'%')
+                ->orderBy('ID_Proveedor', 'DESC')
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $proveedor;

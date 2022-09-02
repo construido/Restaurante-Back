@@ -7,9 +7,9 @@ use App\Models\Proveedor;
 
 class ProveedorController extends Controller
 {
-    public function listarProveedores(){
+    public function listarProveedores(Request $request){
         $proveedor = new Proveedor;
-        $proveedor = $proveedor->listarProveedores();
+        $proveedor = $proveedor->listarProveedores($request);
         return $proveedor;
     }
 
@@ -20,26 +20,48 @@ class ProveedorController extends Controller
     }
 
     public function guardarProveedor(Request $request){
-        $datos['CI_NIT']   = isset($request->CI_NIT) ? $request->CI_NIT : 0;
-        $datos['Nombre']   = isset($request->Nombre) ? $request->Nombre : '';
-        $datos['Correo']   = isset($request->Correo) ? $request->Correo : '';
-        $datos['Telefono'] = isset($request->Telefono) ? $request->Telefono : 0;
+        $this->validate($request,[
+            'CI_NIT'   => 'required',
+            'Nombre'   => 'required',
+            'Correo'   => 'required|email:rfc,dns',
+            'Telefono' => 'required',
+        ]);
 
-        $proveedor = new Proveedor;
-        $proveedor = $proveedor->guardarProveedor($datos);
-        return $proveedor;
+        try {
+            $datos['CI_NIT']   = $request->CI_NIT;
+            $datos['Nombre']   = $request->Nombre;
+            $datos['Correo']   = $request->Correo;
+            $datos['Telefono'] = $request->Telefono;
+    
+            $proveedor = new Proveedor;
+            $proveedor = $proveedor->guardarProveedor($datos);
+            return $proveedor;
+        } catch (Exception $err) {
+            return $err->getMessage();
+        }
     }
 
     public function actualizarProveedor(Request $request){
-        $datos['ID']       = isset($request->ID) ? $request->ID : '';
-        $datos['CI_NIT']   = isset($request->CI_NIT) ? $request->CI_NIT : 0;
-        $datos['Nombre']   = isset($request->Nombre) ? $request->Nombre : '';
-        $datos['Correo']   = isset($request->Correo) ? $request->Correo : '';
-        $datos['Telefono'] = isset($request->Telefono) ? $request->Telefono : 0;
+        $this->validate($request,[
+            'CI_NIT'   => 'required',
+            'Nombre'   => 'required',
+            'Correo'   => 'required|email:rfc,dns',
+            'Telefono' => 'required',
+        ]);
 
-        $proveedor = new Proveedor;
-        $proveedor = $proveedor->actualizarProveedor($datos);
-        return $proveedor;
+        try {
+            $datos['ID']       = $request->ID;
+            $datos['CI_NIT']   = $request->CI_NIT;
+            $datos['Nombre']   = $request->Nombre;
+            $datos['Correo']   = $request->Correo;
+            $datos['Telefono'] = $request->Telefono;
+    
+            $proveedor = new Proveedor;
+            $proveedor = $proveedor->actualizarProveedor($datos);
+            return $proveedor;
+        } catch (Exception $err) {
+            return $err->getMessage();
+        }
     }
 
     public function actualizarEstadoProveedor(Request $request){
