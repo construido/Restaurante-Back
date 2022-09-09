@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use App\Models\Producto;
 use App\Models\Empleado;
@@ -13,13 +14,19 @@ class DashboardController extends Controller
 {
     public function cantidadCompras(){
         $compra = new Compra;
-        $compra = $compra->cantidadCompras();
+
+        if (JWTAuth::user()->Estado_Login == 1) $compra = $compra->cantidadComprasAdmin();
+        else  $compra = $compra->cantidadComprasUser();
+        
         return $compra;
     }
 
     public function cantidadVentas(){
         $venta = new Venta;
-        $venta = $venta->cantidadVentas();
+
+        if (JWTAuth::user()->Estado_Login == 1) $venta = $venta->cantidadVentasAdmin();
+        else  $venta = $venta->cantidadVentasUser();
+
         return $venta;
     }
 

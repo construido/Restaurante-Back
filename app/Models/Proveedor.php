@@ -53,9 +53,9 @@ class Proveedor extends Model
             DB::beginTransaction();
             $proveedor = new Proveedor;
             $proveedor->CI_NIT_Proveedor              = trim($datos['CI_NIT']);
-            $proveedor->Correo_Proveedor              = trim($datos['Correo']);
+            $proveedor->Correo_Proveedor              = mb_strtoupper(trim($datos['Correo']), 'UTF-8');
             $proveedor->Telefono_Proveedor            = trim($datos['Telefono']);
-            $proveedor->Nombre_Razon_Social_Proveedor = trim($datos['Nombre']);
+            $proveedor->Nombre_Razon_Social_Proveedor = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
             $proveedor->save();
             DB::commit();
             
@@ -71,9 +71,9 @@ class Proveedor extends Model
             DB::beginTransaction();
             $proveedor = Proveedor::findOrFail(trim($datos['ID']));
             $proveedor->CI_NIT_Proveedor              = trim($datos['CI_NIT']);
-            $proveedor->Correo_Proveedor              = trim($datos['Correo']);
+            $proveedor->Correo_Proveedor              = mb_strtoupper(trim($datos['Correo']), 'UTF-8');
             $proveedor->Telefono_Proveedor            = trim($datos['Telefono']);
-            $proveedor->Nombre_Razon_Social_Proveedor = trim($datos['Nombre']);
+            $proveedor->Nombre_Razon_Social_Proveedor = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
             $proveedor->save();
             DB::commit();
             

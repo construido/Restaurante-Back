@@ -20,10 +20,27 @@ class Compra extends Model
     protected $fillable   = ['Fecha_Compra', 'Monto_Total_Compra', 'Estado_Compra', 'ID_Empleado', 'ID_Proveedor'];
     public $timestamps = false;
 
-    public function cantidadCompras(){
+    public function cantidadComprasAdmin(){
         try {
             DB::beginTransaction();
             $compra = Compra::select(DB::raw('COUNT(ID_Compra) as Compra'), DB::raw('SUM(Monto_Total_Compra) as Total'))
+                ->where('Fecha_Compra', '=', date('Y-m-d'))
+                ->where('Estado_Compra', '=', 1)
+                ->get();
+            DB::commit();
+
+            return $compra;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function cantidadComprasUser(){
+        try {
+            DB::beginTransaction();
+            $compra = Compra::select(DB::raw('COUNT(ID_Compra) as Compra'), DB::raw('SUM(Monto_Total_Compra) as Total'))
+                ->where('venta.ID_Empleado', '=', JWTAuth::user()->ID_Empleado)
                 ->where('Fecha_Compra', '=', date('Y-m-d'))
                 ->where('Estado_Compra', '=', 1)
                 ->get();

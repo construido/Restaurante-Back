@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\CajaController;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Venta;
 use Exception;
 
@@ -13,7 +14,10 @@ class VentaController extends Controller
 {
     public function listarVentas(Request $request){
         $venta = new Venta;
-        $venta = $venta->listarVentas($request);
+        
+        if (JWTAuth::user()->Estado_Login == 1) $venta = $venta->listarVentasAdmin($request);
+        else  $venta = $venta->listarVentasUser($request);
+
         return $venta;
     }
 

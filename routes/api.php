@@ -49,41 +49,53 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
         Route::post('/guardarProducto', [ProductoController::class, 'guardarProducto']);
         
         Route::put('/actualizarEstadoCliente', [ClienteController::class, 'actualizarEstadoCliente']);
-        Route::put('/actualizarCliente', [ClienteController::class, 'actualizarCliente']);
-        Route::post('/guardarCliente', [ClienteController::class, 'guardarCliente']);
 
         Route::put('/actualizarEstadoProveedor', [ProveedorController::class, 'actualizarEstadoProveedor']);
-        Route::get('/listarSelectProveedor', [ProveedorController::class, 'listarSelectProveedor']);
-        Route::put('/actualizarProveedor', [ProveedorController::class, 'actualizarProveedor']);
-        Route::post('/guardarProveedor', [ProveedorController::class, 'guardarProveedor']);
-
-        Route::get('/listarDetalleCompra', [CompraController::class, 'listarDetalleCompra']);
-        Route::post('/guardarCompra', [CompraController::class, 'guardarCompra']);
     });
 
+    // -------------------------------- ROUTE CATEGORIA --------------------------------
     Route::get('/listarCategoriaSelect', [CategoriaController::class, 'listarCategoriaSelect']);
+
+    // -------------------------------- ROUTE MOVIMIENTO --------------------------------------
     Route::post('/ingresoSalidaCaja', [MovimientoController::class, 'ingresoSalidaCaja']);
     Route::get('/listarMovimientos', [MovimientoController::class, 'listarMovimientos']);
+
+    // -------------------------------- ROUTE PROVEEDOR --------------------------------
+    Route::get('/listarSelectProveedor', [ProveedorController::class, 'listarSelectProveedor']);
+    Route::put('/actualizarProveedor', [ProveedorController::class, 'actualizarProveedor']);
     Route::get('/listarProveedores', [ProveedorController::class, 'listarProveedores']);
+    Route::post('/guardarProveedor', [ProveedorController::class, 'guardarProveedor']);
+
+    // -------------------------------- ROUTE CATEGORIA --------------------------------
     Route::get('/listarCategorias', [CategoriaController::class, 'listarCategorias']);
 
+    // -------------------------------- ROUTE PRODUCTO --------------------------------
     Route::get('/listarProductos', [ProductoController::class, 'listarProductos']);
     Route::get('/buscarProducto', [ProductoController::class, 'buscarProducto']);
 
+    // -------------------------------- ROUTE CLIENTE --------------------------------
     Route::get('/listarSelectCliente', [ClienteController::class, 'listarSelectCliente']);
+    Route::put('/actualizarCliente', [ClienteController::class, 'actualizarCliente']);
+    Route::post('/guardarCliente', [ClienteController::class, 'guardarCliente']);
     Route::get('/listarClientes', [ClienteController::class, 'listarClientes']);
 
+    // -------------------------------- ROUTE COMPRA --------------------------------
+    Route::get('/listarDetalleCompra', [CompraController::class, 'listarDetalleCompra']);
+    Route::post('/guardarCompra', [CompraController::class, 'guardarCompra']);
     Route::get('/listarCompras', [CompraController::class, 'listarCompras']);
 
+    // -------------------------------- ROUTE VENTA --------------------------------
     Route::get('/listarDetalleVenta', [VentaController::class, 'listarDetalleVenta']);
     Route::post('/guardarVenta', [VentaController::class, 'guardarVenta']);
     Route::get('/listarVentas', [VentaController::class, 'listarVentas']);
 
+    // -------------------------------- ROUTE CAJA --------------------------------
     Route::post('/aperturaCaja', [CajaController::class, 'aperturaCaja']);
     Route::get('/listarCajas', [CajaController::class, 'listarCajas']);
     Route::post('/cierreCaja', [CajaController::class, 'cierreCaja']);
     Route::post('/buscarCaja', [CajaController::class, 'buscarCaja']);
 
+    // -------------------------------- ROUTE DASHBOARD --------------------------------
     Route::post('/porcentajeProductos', [DashboardController::class, 'porcentajeProductos']);
     Route::post('/cantidadProductos', [DashboardController::class, 'cantidadProductos']);
     Route::post('/cantidadClientes', [DashboardController::class, 'cantidadClientes']);

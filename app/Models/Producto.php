@@ -17,7 +17,7 @@ class Producto extends Model
     protected $primaryKey = 'ID_Producto';
     protected $fillable   = [
         'Nombre_Producto', 'Precio_Compra_P', 'Precio_Venta_P', 'Ingreso_Producto', 'Salida_Producto', 'Stock',
-        'Stock_Minimo', 'Foto_Producto', 'Descripcion_Producto','Estado_Producto', 'ID_Categoria'
+        'Stock_Minimo', 'Foto_Producto', 'Descripcion_Producto','Estado_Producto', 'ID_Categoria', 'Codigo_Producto'
     ];
     public $timestamps = false;
 
@@ -94,12 +94,12 @@ class Producto extends Model
         }
     }
 
-    public function buscarProducto($Nombre){
+    public function buscarProducto($Codigo){
         try {
             DB::beginTransaction();
             $producto = Producto::select('producto.*', 'categoria.Nombre_Categoria as Categoria')
                 ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
-                ->where('producto.Nombre_Producto', '=', $Nombre)
+                ->where('producto.Codigo_Producto', '=', $Codigo)
                 ->get();
             DB::commit();
 
@@ -116,12 +116,13 @@ class Producto extends Model
             $producto = new Producto;
             $producto->Precio_Venta_P       = $datos['Venta'];
             $producto->Stock                = $datos['Ingreso'];
-            $producto->Nombre_Producto      = trim($datos['Nombre']);
+            $producto->Nombre_Producto      = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
             $producto->Precio_Compra_P      = $datos['Compra'];
             $producto->Stock_Minimo         = $datos['Minimo'];
             $producto->Ingreso_Producto     = $datos['Ingreso'];
+            $producto->Codigo_Producto      = mb_strtoupper(trim($datos['Codigo']), 'UTF-8');
             $producto->ID_Categoria         = $datos['Categoria'];
-            $producto->Descripcion_Producto = trim($datos['Descripcion']);
+            $producto->Descripcion_Producto = mb_strtoupper(trim($datos['Descripcion']), 'UTF-8');
             $producto->save();
             DB::commit();
             
@@ -138,12 +139,13 @@ class Producto extends Model
             $producto = Producto::findOrFail(trim($datos['ID']));
             $producto->Precio_Venta_P       = trim($datos['Venta']);
             $producto->Stock                = trim($datos['Ingreso']);
-            $producto->Nombre_Producto      = trim($datos['Nombre']);
+            $producto->Nombre_Producto      = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
             $producto->Precio_Compra_P      = trim($datos['Compra']);
             $producto->Stock_Minimo         = trim($datos['Minimo']);
             $producto->Ingreso_Producto     = trim($datos['Ingreso']);
+            $producto->Codigo_Producto      = mb_strtoupper(trim($datos['Codigo']), 'UTF-8');
             $producto->ID_Categoria         = trim($datos['Categoria']);
-            $producto->Descripcion_Producto = trim($datos['Descripcion']);
+            $producto->Descripcion_Producto = mb_strtoupper(trim($datos['Descripcion']), 'UTF-8');
             $producto->save();
             DB::commit();
             

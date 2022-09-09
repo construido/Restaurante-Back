@@ -25,8 +25,11 @@ class AuthController extends Controller
 
         $credential = $request->only('Usuario', 'password');
 
+        //$token = auth()->attempt($credentials);
+
         try{
-            if(!$token = JWTAuth::attempt($credential)){
+            //if(!$token = JWTAuth::attempt($credential)){
+            if(!$token = auth()->attempt($credential)){
                 return response(null, 401);
             }
 

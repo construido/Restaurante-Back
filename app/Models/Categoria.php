@@ -53,8 +53,8 @@ class Categoria extends Model
         try {
             DB::beginTransaction();
             $categoria = new Categoria;
-            $categoria->Nombre_Categoria      = trim($datos['Nombre']);
-            $categoria->Descripcion_Categoria = trim($datos['Descripcion']);
+            $categoria->Nombre_Categoria      = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
+            $categoria->Descripcion_Categoria = mb_strtoupper(trim($datos['Descripcion']), 'UTF-8');
             $categoria->save();
             DB::commit();
             
@@ -69,8 +69,8 @@ class Categoria extends Model
         try {
             DB::beginTransaction();
             $categoria = Categoria::findOrFail(trim($datos['ID']));
-            $categoria->Nombre_Categoria      = trim($datos['Nombre']);
-            $categoria->Descripcion_Categoria = trim($datos['Descripcion']);
+            $categoria->Nombre_Categoria      = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
+            $categoria->Descripcion_Categoria = mb_strtoupper(trim($datos['Descripcion']), 'UTF-8');
             $categoria->save();
             DB::commit();
             

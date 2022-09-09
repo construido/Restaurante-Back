@@ -67,9 +67,9 @@ class Cliente extends Model
             DB::beginTransaction();
             $cliente = new Cliente;
             $cliente->CI_NIT_Cliente              = trim($datos['CI_NIT']);
-            $cliente->Correo_Cliente              = trim($datos['Correo']);
+            $cliente->Correo_Cliente              = mb_strtoupper(trim($datos['Correo']), 'UTF-8');
             $cliente->Telefono_Cliente            = trim($datos['Telefono']);
-            $cliente->Nombre_Razon_Social_Cliente = trim($datos['Nombre']);
+            $cliente->Nombre_Razon_Social_Cliente = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
             $cliente->save();
             DB::commit();
             
@@ -85,9 +85,9 @@ class Cliente extends Model
             DB::beginTransaction();
             $cliente = Cliente::findOrFail(trim($datos['ID']));
             $cliente->CI_NIT_Cliente              = trim($datos['CI_NIT']);
-            $cliente->Correo_Cliente              = trim($datos['Correo']);
+            $cliente->Correo_Cliente              = mb_strtoupper(trim($datos['Correo']), 'UTF-8');
             $cliente->Telefono_Cliente            = trim($datos['Telefono']);
-            $cliente->Nombre_Razon_Social_Cliente = trim($datos['Nombre']);
+            $cliente->Nombre_Razon_Social_Cliente = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
             $cliente->save();
             DB::commit();
             

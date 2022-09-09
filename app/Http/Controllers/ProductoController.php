@@ -15,7 +15,7 @@ class ProductoController extends Controller
 
     public function buscarProducto(Request $request){
         $producto = new Producto;
-        $producto = $producto->buscarProducto($request->Nombre);
+        $producto = $producto->buscarProducto($request->Codigo);
         return $producto;
     }
 
@@ -24,6 +24,7 @@ class ProductoController extends Controller
             'Venta'     => 'required',
             'Nombre'    => 'required',
             'Compra'    => 'required',
+            'Codigo'    => 'required',
             'Categoria' => 'required',
         ]);
 
@@ -32,6 +33,7 @@ class ProductoController extends Controller
             $datos['Minimo']      = $request->Minimo;
             $datos['Nombre']      = $request->Nombre;
             $datos['Compra']      = $request->Compra;
+            $datos['Codigo']      = $request->Codigo;
             $datos['Ingreso']     = $request->Ingreso;
             $datos['Categoria']   = $request->Categoria;
             $datos['Descripcion'] = $request->Descripcion;
@@ -51,6 +53,7 @@ class ProductoController extends Controller
             'Minimo'    => 'required',
             'Nombre'    => 'required',
             'Compra'    => 'required',
+            'Codigo'    => 'required',
             'Ingreso'   => 'required',
             'Categoria' => 'required',
         ]);
@@ -61,6 +64,7 @@ class ProductoController extends Controller
             $datos['Minimo']      = $request->Minimo;
             $datos['Nombre']      = $request->Nombre;
             $datos['Compra']      = $request->Compra;
+            $datos['Codigo']      = $request->Codigo;
             $datos['Ingreso']     = $request->Ingreso;
             $datos['Categoria']   = $request->Categoria;
             $datos['Descripcion'] = $request->Descripcion;

@@ -22,7 +22,7 @@ use DB;
 
 class Login extends Authenticatable implements JWTSubject //Model
 {
-    use HasFactory;
+    use HasFactory, Notifiable;
 
     protected $table      = 'login';
     protected $primaryKey = 'ID_Login';
