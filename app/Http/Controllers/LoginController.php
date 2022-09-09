@@ -9,7 +9,7 @@ class LoginController extends Controller
 {
     public function guardarLogin(Request $request){
         $login = new Login;
-        $login = $login->guardarLogin();
+        $login = $login->get();
         return $login;
     }
 }

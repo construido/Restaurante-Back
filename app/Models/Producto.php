@@ -39,18 +39,6 @@ class Producto extends Model
                 ->get();
             DB::commit();
 
-            /*SELECT detalle_venta.ID_Producto, Nombre_Producto, Nombre_Categoria, sum(Cantidad_Venta)/(SELECT SUM(Cantidad_Venta) 
-                FROM detalle_venta
-                JOIN venta on detalle_venta.ID_Venta = venta.ID_Venta 
-                WHERE YEAR(Fecha_Venta) = YEAR('2022-08-01') AND MONTH(Fecha_Venta) = MONTH('2022-08-30')) * 100 as Porcentaje
-            FROM detalle_venta
-            JOIN producto on detalle_venta.ID_Producto = producto.ID_Producto
-            JOIN venta on detalle_venta.ID_Venta = venta.ID_Venta
-            JOIN categoria on producto.ID_Categoria = categoria.ID_Categoria
-            WHERE YEAR(Fecha_Venta) = YEAR('2022-08-01') AND MONTH(Fecha_Venta) = MONTH('2022-08-30')
-            GROUP BY detalle_venta.ID_Producto
-            ORDER BY Porcentaje DESC;*/
-
             return $producto;
         } catch (Exception $e) {
             DB::rollback();

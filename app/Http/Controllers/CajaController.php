@@ -3,14 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Caja;
+
 use App\Http\Controllers\MovimientoController;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use App\Models\Caja;
 
 class CajaController extends Controller
 {
     public function listarCajas(Request $request){
         $caja = new Caja;
-        $caja = $caja->listarCajas($request);
+
+        if (JWTAuth::user()->Estado_Login == 1) $caja = $caja->listarCajasAdmin($request);
+        else  $caja = $caja->listarCajasUser($request);
+        
         return $caja;
     }
 

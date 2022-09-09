@@ -27,11 +27,28 @@ class Caja extends Model
         'Saldo_Caja', 'Observacion', 'Estado_Caja', 'ID_Empleado'];
     public $timestamps = false;
 
-    public function listarCajas($parametros){
+    public function listarCajasAdmin($parametros){
         try {
             DB::beginTransaction();
             $caja = Caja::select('caja.*', (DB::raw('CONCAT(empleado.Nombre_Empleado, " " ,empleado.Apellido_Empleado) as Empleado')))
                 ->join('empleado', 'caja.ID_Empleado', 'empleado.ID_Empleado')
+                ->orderBy('caja.ID_Caja', 'DESC')
+                ->paginate($parametros->rows);
+            DB::commit();
+
+            return $caja;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function listarCajasUser($parametros){
+        try {
+            DB::beginTransaction();
+            $caja = Caja::select('caja.*', (DB::raw('CONCAT(empleado.Nombre_Empleado, " " ,empleado.Apellido_Empleado) as Empleado')))
+                ->join('empleado', 'caja.ID_Empleado', 'empleado.ID_Empleado')
+                ->where('caja.ID_Empleado', '=', JWTAuth::user()->ID_Empleado)
                 ->orderBy('caja.ID_Caja', 'DESC')
                 ->paginate($parametros->rows);
             DB::commit();
