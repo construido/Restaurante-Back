@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\DetalleCompraController;
 use App\Http\Controllers\CajaController;
+use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Models\Compra;
 use Exception;
 
@@ -13,7 +14,10 @@ class CompraController extends Controller
 {
     public function listarCompras(Request $request){
         $compra = new Compra;
-        $compra = $compra->listarCompras($request);
+
+        if (JWTAuth::user()->Estado_Login == 1) $compra = $compra->listarComprasAdmin($request);
+        else  $compra = $compra->listarComprasUser($request);
+
         return $compra;
     }
 

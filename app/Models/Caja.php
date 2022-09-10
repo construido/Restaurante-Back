@@ -84,7 +84,7 @@ class Caja extends Model
             $caja->Fecha_Apertura = date('Y-m-d');
             $caja->Saldo_Inicial  = $datos['Inicio'];
             $caja->Saldo_Caja     = $datos['Inicio'];
-            $caja->Observacion    = $datos['Observacion'];
+            $caja->Observacion    = mb_strtoupper(trim($datos['Observacion']), 'UTF-8');
             $caja->Estado_Caja    = 1;
             $caja->ID_Empleado    = JWTAuth::user()->ID_Empleado;
             $caja->save();
@@ -130,7 +130,7 @@ class Caja extends Model
             DB::beginTransaction();
             $caja = Caja::findOrFail($datos['ID']);
             $caja->Fecha_Cierre = date('Y-m-d');
-            $caja->Observacion  = trim($datos['Observacion']);
+            $caja->Observacion  = mb_strtoupper(trim($datos['Observacion']), 'UTF-8');
             $caja->Estado_Caja  = 2;
             $caja->save();
             DB::commit();

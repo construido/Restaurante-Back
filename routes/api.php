@@ -71,6 +71,8 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
 
     // -------------------------------- ROUTE PRODUCTO --------------------------------
     Route::get('/listarProductos', [ProductoController::class, 'listarProductos']);
+    Route::get('/entradaProducto', [ProductoController::class, 'entradaProducto']);
+    Route::get('/salidaProducto', [ProductoController::class, 'salidaProducto']);
     Route::get('/buscarProducto', [ProductoController::class, 'buscarProducto']);
 
     // -------------------------------- ROUTE CLIENTE --------------------------------

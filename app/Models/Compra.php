@@ -40,7 +40,7 @@ class Compra extends Model
         try {
             DB::beginTransaction();
             $compra = Compra::select(DB::raw('COUNT(ID_Compra) as Compra'), DB::raw('SUM(Monto_Total_Compra) as Total'))
-                ->where('venta.ID_Empleado', '=', JWTAuth::user()->ID_Empleado)
+                ->where('compra.ID_Empleado', '=', JWTAuth::user()->ID_Empleado)
                 ->where('Fecha_Compra', '=', date('Y-m-d'))
                 ->where('Estado_Compra', '=', 1)
                 ->get();
@@ -53,13 +53,33 @@ class Compra extends Model
         }
     }
 
-    public function listarCompras($parametros){
+    public function listarComprasAdmin($parametros){
         try {
             DB::beginTransaction();
             $compra = Compra::select('compra.*', 'proveedor.Nombre_Razon_Social_Proveedor as Proveedor',
                 (DB::raw('CONCAT(empleado.Nombre_Empleado, " " ,empleado.Apellido_Empleado) as Empleado')))
                 ->join('empleado', 'compra.ID_Empleado', 'empleado.ID_Empleado')
                 ->join('proveedor', 'compra.ID_Proveedor', 'proveedor.ID_Proveedor')
+                ->where('Estado_Compra', '=', 1)
+                ->OrderBy('compra.ID_Compra', 'DESC')
+                ->paginate($parametros->rows);
+            DB::commit();
+
+            return $compra;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function listarComprasUser($parametros){
+        try {
+            DB::beginTransaction();
+            $compra = Compra::select('compra.*', 'proveedor.Nombre_Razon_Social_Proveedor as Proveedor',
+                (DB::raw('CONCAT(empleado.Nombre_Empleado, " " ,empleado.Apellido_Empleado) as Empleado')))
+                ->join('empleado', 'compra.ID_Empleado', 'empleado.ID_Empleado')
+                ->join('proveedor', 'compra.ID_Proveedor', 'proveedor.ID_Proveedor')
+                ->where('compra.ID_Empleado', '=', JWTAuth::user()->ID_Empleado)
                 ->where('Estado_Compra', '=', 1)
                 ->OrderBy('compra.ID_Compra', 'DESC')
                 ->paginate($parametros->rows);

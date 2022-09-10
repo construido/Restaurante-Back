@@ -40,7 +40,7 @@ class Movimiento extends Model
             $movimiento->ID_Caja                = $datos['Caja'];
             $movimiento->Tipo_Movimiento        = $datos['Movimiento'];
             $movimiento->Monto_Movimiento       = $datos['Monto'];
-            $movimiento->Observacion_Movimiento = $datos['Observacion'];
+            $movimiento->Observacion_Movimiento = mb_strtoupper($datos['Observacion'], 'UTF-8');
             $movimiento->save();
             DB::commit();
             

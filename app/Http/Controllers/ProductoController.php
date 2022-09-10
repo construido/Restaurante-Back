@@ -19,6 +19,18 @@ class ProductoController extends Controller
         return $producto;
     }
 
+    public function salidaProducto(Request $request){
+        $producto = new Producto;
+        $producto = $producto->salidaProducto($request);
+        return $producto;
+    }
+
+    public function entradaProducto(Request $request){
+        $producto = new Producto;
+        $producto = $producto->entradaProducto($request);
+        return $producto;
+    }
+
     public function guardarProducto(Request $request){
         $this->validate($request,[
             'Venta'     => 'required',

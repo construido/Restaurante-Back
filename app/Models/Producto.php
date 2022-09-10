@@ -82,7 +82,8 @@ class Producto extends Model
             DB::beginTransaction();
             $producto = Producto::select('producto.*', 'categoria.Nombre_Categoria as Categoria')
                 ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
-                ->where('Nombre_Producto', 'like', '%'.$parametros->filters.'%')
+                ->where('Nombre_Categoria', 'like', '%'.$parametros->filters.'%')
+                ->orWhere('Codigo_Producto', 'like', '%'.$parametros->filters.'%')
                 ->orderBy('ID_Producto', 'DESC')
                 ->paginate($parametros->rows);
             DB::commit();
@@ -101,6 +102,44 @@ class Producto extends Model
                 ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
                 ->where('producto.Codigo_Producto', '=', $Codigo)
                 ->get();
+            DB::commit();
+
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function entradaProducto($parametros){
+        try {
+            DB::beginTransaction();
+            $producto = Producto::select('compra.ID_Compra', 'compra.Fecha_Compra', 'detalle_compra.Cantidad_Compra', 'detalle_compra.Monto_Parcial_Compra',
+                    'producto.Codigo_Producto', 'producto.Nombre_Producto', 'categoria.Nombre_Categoria', 'detalle_compra.Precio_Compra')
+                ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
+                ->join('detalle_compra', 'producto.ID_Producto', 'detalle_compra.ID_Producto')
+                ->join('compra', 'detalle_compra.ID_Compra', 'compra.ID_Compra')
+                ->orderBy('compra.ID_Compra', 'DESC')
+                ->paginate($parametros->rows);
+            DB::commit();
+
+            return $producto;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function salidaProducto($parametros){
+        try {
+            DB::beginTransaction();
+            $producto = Producto::select('venta.ID_Venta', 'venta.Fecha_Venta', 'detalle_venta.Cantidad_Venta', 'detalle_venta.Monto_Parcial_Venta',
+                    'producto.Codigo_Producto', 'producto.Nombre_Producto', 'categoria.Nombre_Categoria', 'detalle_venta.Precio_Venta')
+                ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
+                ->join('detalle_venta', 'producto.ID_Producto', 'detalle_venta.ID_Producto')
+                ->join('venta', 'detalle_venta.ID_Venta', 'venta.ID_Venta')
+                ->orderBy('venta.ID_Venta', 'DESC')
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $producto;
