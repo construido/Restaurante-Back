@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\DetalleCompraController;
 use App\Http\Controllers\CajaController;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\ImprimirPDF\CompraPDF;
 use App\Models\Compra;
 use Exception;
 
@@ -52,5 +53,11 @@ class CompraController extends Controller
         $caja = $caja->actualizarCaja($datos);
 
         return $detalleCompra;
+    }
+
+    public function imprimirCompra(Request $request){
+        $pdf = new CompraPDF;
+        $pdf = $pdf->imprimir($request->Compra);
+        return $pdf;
     }
 }

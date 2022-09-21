@@ -25,9 +25,9 @@ class Producto extends Model
         try {
             DB::beginTransaction();
             $producto = Producto::select('Nombre_Producto', 'Nombre_Categoria',
-                (DB::raw('CONCAT(ROUND(SUM((Cantidad_venta / ( SELECT SUM( Cantidad_venta ) FROM producto, detalle_venta, venta
+                (DB::raw('ROUND(SUM((Cantidad_venta / ( SELECT SUM( Cantidad_venta ) FROM producto, detalle_venta, venta
                     WHERE detalle_venta.ID_Producto = producto.ID_Producto AND detalle_venta.ID_venta = venta.ID_venta
-                    AND YEAR(Fecha_Venta) = YEAR("'.date('Y-m-d').'") AND MONTH(Fecha_Venta) = MONTH("'.date('Y-m-d').'")) * 100 )), 2), "%") as Porcentaje')))
+                    AND YEAR(Fecha_Venta) = YEAR("'.date('Y-m-d').'") AND MONTH(Fecha_Venta) = MONTH("'.date('Y-m-d').'")) * 100 )), 2) as Porcentaje')))
                 ->join('categoria', 'producto.ID_Categoria', 'categoria.ID_Categoria')
                 ->join('detalle_venta', 'producto.ID_Producto', 'detalle_venta.ID_Producto')
                 ->join('venta', 'detalle_venta.ID_Venta', 'venta.ID_Venta')

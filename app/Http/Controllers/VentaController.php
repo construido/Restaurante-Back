@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\DetalleVentaController;
 use App\Http\Controllers\CajaController;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\ImprimirPDF\VentaPDF;
 use App\Models\Venta;
 use Exception;
 
@@ -60,5 +61,11 @@ class VentaController extends Controller
         } catch (Exception $err) {
             return $err->getMessage();
         }
+    }
+
+    public function imprimirVenta(Request $request){
+        $pdf = new VentaPDF;
+        $pdf = $pdf->imprimir($request->Venta);
+        return $pdf;
     }
 }

@@ -30,10 +30,15 @@ class Empleado extends Model
 
     public $timestamps = false;
 
-    public function listarEmpleados(){
+    public function listarEmpleados($parametros){
         try {
             DB::beginTransaction();
-            $empleados = Empleado::get();
+            $empleados = Empleado::select('empleado.*', 'Estado_Login', 'Fecha_Creacion_Login', 'Usuario', 'ID_Login')
+                ->join('login', 'empleado.ID_Empleado', 'login.ID_Empleado')
+                ->where('Nombre_Empleado', 'like', '%'.$parametros->filters.'%')
+                ->orWhere('Apellido_Empleado', 'like', '%'.$parametros->filters.'%')
+                ->orderBy('ID_Empleado', 'DESC')
+                ->paginate($parametros->rows);
             DB::commit();
 
             return $empleados;
@@ -61,19 +66,19 @@ class Empleado extends Model
         try {
             DB::beginTransaction();
             $empleado = new Empleado;
-            $empleado->CI_Empleado       = trim($datos['CI']);
-            $empleado->Foto_Empleado     = trim($datos['Foto']);
-            $empleado->Correo_Empleado   = trim($datos['Correo']);
-            $empleado->Nombre_Empleado   = trim($datos['Nombre']);
-            $empleado->Celular_Empleado  = trim($datos['Celular']);
-            $empleado->Apellido_Empleado = trim($datos['Apellido']);
+            $empleado->CI_Empleado       = $datos['CI'];
+            $empleado->Correo_Empleado   = mb_strtoupper(trim($datos['Correo']), 'UTF-8');
+            $empleado->Nombre_Empleado   = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
+            $empleado->Celular_Empleado  = $datos['Celular'];
+            $empleado->Apellido_Empleado = mb_strtoupper(trim($datos['Apellido']), 'UTF-8');
             $empleado->save();
             DB::commit();
 
             $login = new Login;
-            $login['Usuario']     = $datos['Usuario'];
-            $login['Contrasena']  = $datos['Contrasena'];
-            $login['ID_Empleado'] = $empleado->ID_Empleado;
+            $login['Usuario']      = $datos['Usuario'];
+            $login['Password']     = $datos['Password'];
+            $login['Estado_Login'] = $datos['Rol'];
+            $login['ID_Empleado']  = $empleado->ID_Empleado;
             $login->guardarLogin($login);
             
             return $empleado;
@@ -87,14 +92,20 @@ class Empleado extends Model
         try {
             DB::beginTransaction();
             $empleado = Empleado::findOrFail(trim($datos['ID']));
-            $empleado->CI_Empleado       = trim($datos['CI']);
-            $empleado->Foto_Empleado     = trim($datos['Foto']);
-            $empleado->Correo_Empleado   = trim($datos['Correo']);
-            $empleado->Nombre_Empleado   = trim($datos['Nombre']);
-            $empleado->Celular_Empleado  = trim($datos['Celular']);
-            $empleado->Apellido_Empleado = trim($datos['Apellido']);
+            $empleado->CI_Empleado       = $datos['CI'];
+            $empleado->Correo_Empleado   = mb_strtoupper(trim($datos['Correo']), 'UTF-8');
+            $empleado->Nombre_Empleado   = mb_strtoupper(trim($datos['Nombre']), 'UTF-8');
+            $empleado->Celular_Empleado  = $datos['Celular'];
+            $empleado->Apellido_Empleado = mb_strtoupper(trim($datos['Apellido']), 'UTF-8');
             $empleado->save();
             DB::commit();
+
+            $login = new Login;
+            $login['Usuario']     = $datos['Usuario'];
+            $login['ID_Login']    = $datos['Login'];
+            $login['Estado_Login'] = $datos['Rol'];
+            $login['ID_Empleado'] = $datos['ID'];
+            $login->editarUsuario($login);
             
             return $empleado;
         } catch (Exception $e) {
@@ -110,16 +121,6 @@ class Empleado extends Model
             $empleado->Estado_Empleado = trim($datos['Estado']);
             $empleado->save();
             DB::commit();
-
-            $login = new Login;
-            if($datos['Estado'] > 2){
-                $login['Estado']      = $datos['Estado'];
-            }elseif($datos['Estado'] == 1){
-                $login['Estado']      = 2;
-                $login['ID_Empleado'] = $datos['ID'];
-            }
-            $login['ID_Empleado'] = $datos['ID'];
-            $login->actualizarEstadoLogin($login);
             
             return $empleado;
         } catch (Exception $e) {

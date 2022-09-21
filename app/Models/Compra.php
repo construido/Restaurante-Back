@@ -92,11 +92,30 @@ class Compra extends Model
         }
     }
 
+    /*public function obtenerCodigo(){
+        DB::beginTransaction();
+        $compra = Compra::select('Codigo_Compra')->orderBy('Codigo_Compra', 'DESC')->limit(1)->get();
+        DB::commit();
+
+        $codigo = substr($compra[0]->Codigo_Compra, 0, 3);
+        $serie = substr($compra[0]->Codigo_Compra, 3, 8);
+
+        echo strlen($serie);
+
+        $serie = intval($serie);
+        $serie = $serie + 1;
+        
+        echo $serie;
+
+        // return $compra;
+    }*/
+
     public function guardarCompra($datos){
         try {
             DB::beginTransaction();
             $compra = new Compra;
             $compra->ID_Empleado        = JWTAuth::user()->ID_Empleado;
+            $compra->Codigo_Compra      = JWTAuth::user()->ID_Empleado;
             $compra->ID_Proveedor       = trim($datos['Proveedor']);
             $compra->Fecha_Compra       = date('Y-m-d');
             $compra->Monto_Total_Compra = trim($datos['Total']);

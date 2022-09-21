@@ -12,7 +12,6 @@ use App\Http\Controllers\EmpleadoController;
 use App\Http\Controllers\ClienteController;
 use App\Http\Controllers\CompraController;
 use App\Http\Controllers\VentaController;
-use App\Http\Controllers\LoginController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CajaController;
 
@@ -32,9 +31,8 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
     Route::post('/logout', [AuthController::class, 'logout']);
 
     Route::group(['middleware' => ['admin.verify']], function(){
-        Route::post('/crearLogin', [LoginController::class, 'guardarLogin']);
-
         Route::put('/actualizarEstadoEmpleado', [EmpleadoController::class, 'actualizarEstadoEmpleado']);
+        Route::put('/actualizarContrasena', [EmpleadoController::class, 'actualizarContrasena']);
         Route::put('/actualizarEmpleado', [EmpleadoController::class, 'actualizarEmpleado']);
         Route::post('/guardarEmpleado', [EmpleadoController::class, 'guardarEmpleado']);
         Route::get('/listarEmpleados', [EmpleadoController::class, 'listarEmpleados']);
@@ -104,4 +102,8 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
     Route::post('/cantidadCompras', [DashboardController::class, 'cantidadCompras']);
     Route::post('/cantidadVentas', [DashboardController::class, 'cantidadVentas']);
     Route::post('/productoStock', [DashboardController::class, 'productoStock']);
+
+    // -------------------------------- ROUTE PDF --------------------------------
+    Route::get('/imprimirVenta', [VentaController::class, 'imprimirVenta']);
+    Route::get('/imprimirCompra', [CompraController::class, 'imprimirCompra']);
 });

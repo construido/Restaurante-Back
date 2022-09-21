@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 use Exception;
 use Hash;
@@ -37,7 +38,7 @@ class Login extends Authenticatable implements JWTSubject //Model
             DB::beginTransaction();
             $login = new Login;
             $login->Usuario              = trim($datos['Usuario']);
-            $login->Contrasena           = Hash::make(trim($datos['Contrasena']));
+            $login->Contrasena           = Hash::make(trim($datos['Password']));
             $login->ID_Empleado          = trim($datos['ID_Empleado']);
             $login->Fecha_Creacion_Login = date('Y-m-d');
             $login->save();
@@ -50,15 +51,30 @@ class Login extends Authenticatable implements JWTSubject //Model
         }
     }
 
-
-    public function actualizarEstadoLogin($datos){
+    public function editarUsuario($datos){
         try {
             DB::beginTransaction();
-            $login = Login::findOrFail(trim($datos['ID_Empleado']));
-            $login->Estado_Login = trim($datos['Estado']);
+            $login = Login::where('ID_Empleado', '=', $datos['ID_Empleado'])->findOrFail($datos['ID_Login']);
+            $login->Usuario      = trim($datos['Usuario']);
+            $login->Estado_Login = trim($datos['Estado_Login']);
             $login->save();
             DB::commit();
-            
+
+            return $login;
+        } catch (Exception $e) {
+            DB::rollback();
+            return $e->getMessage();
+        }
+    }
+
+    public function actualizarContrasena($datos){
+        try {
+            DB::beginTransaction();
+            $login = Login::where('ID_Empleado', '=', $datos['ID'])->findOrFail($datos['Login']);
+            $login->Contrasena = Hash::make(trim($datos['Password']));
+            $login->save();
+            DB::commit();
+
             return $login;
         } catch (Exception $e) {
             DB::rollback();
