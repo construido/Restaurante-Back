@@ -104,6 +104,7 @@ Route::group(['prefix' => 'verify', 'middleware' => ['jwt.verify']], function(){
     Route::post('/productoStock', [DashboardController::class, 'productoStock']);
 
     // -------------------------------- ROUTE PDF --------------------------------
-    Route::get('/imprimirVenta', [VentaController::class, 'imprimirVenta']);
     Route::get('/imprimirCompra', [CompraController::class, 'imprimirCompra']);
+    Route::get('/imprimirVenta', [VentaController::class, 'imprimirVenta']);
+    Route::get('/imprimirCaja', [CajaController::class, 'imprimirCaja']);
 });

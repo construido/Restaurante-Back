@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Controllers\MovimientoController;
 use Tymon\JWTAuth\Facades\JWTAuth;
+use App\ImprimirPDF\CajaPDF;
 use App\Models\Caja;
 
 class CajaController extends Controller
@@ -76,5 +77,11 @@ class CajaController extends Controller
         $movimiento = $movimiento->guardarMovimiento($datosMov);
 
         return $caja;
+    }
+
+    public function imprimirCaja(Request $request){
+        $pdf = new CajaPDF;
+        $pdf = $pdf->imprimir($request->Caja);
+        return $pdf;
     }
 }
